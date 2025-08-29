@@ -10,15 +10,11 @@ async function bootstrap() {
   const allowlist = new Set([fromEnv, 'http://localhost:5173']);
 
   app.enableCors({
-    origin(origin, cb) {
-      // origin puede ser undefined (curl/Postman). Permite si no hay Origin.
-      if (!origin || allowlist.has(origin)) return cb(null, true);
-      return cb(new Error('Not allowed by CORS'));
-    },
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // ponlo en false si no usas cookies
-  });
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ['GET','POST','PUT','PATCH','DELETE'],
+    allowedHeaders: ['Content-Type','Authorization'],
+  });
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
