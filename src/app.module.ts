@@ -5,6 +5,7 @@ import { DataSourceOptions } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RiskModule } from './risk/risk.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { RiskModule } from './risk/risk.module';
       },
     }),
     RiskModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

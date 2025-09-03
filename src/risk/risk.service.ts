@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Risk, Likelihood, Severity, RiskLevel } from './risk.entity';
 import { CreateRiskDto } from './dto/create-risk.dto';
+import { MetricsService } from 'src/metrics/metrics.service';
 
 @Injectable()
 export class RiskService {
   constructor(
     @InjectRepository(Risk)
     private riskRepository: Repository<Risk>,
+    private readonly metrics: MetricsService,
   ) {}
 
   private calculateRiskScore(likelihood: Likelihood, severity: Severity): number {
@@ -57,7 +59,10 @@ export class RiskService {
       riskLevel,
     });
 
-    return this.riskRepository.save(risk);
+     // Guardar y contar solo si fue exitoso
+     const saved = await this.riskRepository.save(risk);
+     this.metrics.risksCreatedTotal.labels('api').inc(); // <-- añadido
+     return saved;
   }
 
   async findAll(): Promise<Risk[]> {
