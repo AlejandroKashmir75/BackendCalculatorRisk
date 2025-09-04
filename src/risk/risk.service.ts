@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Risk, Likelihood, Severity, RiskLevel } from './risk.entity';
 import { CreateRiskDto } from './dto/create-risk.dto';
-import { MetricsService } from 'src/metrics/metrics.service';
+import { MetricsService } from '../metrics/metrics.service';
 
 @Injectable()
 export class RiskService {
